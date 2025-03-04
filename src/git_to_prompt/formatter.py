@@ -28,29 +28,29 @@ def format_commit_as_cxml(
     subject = html.escape(commit.subject)
 
     cxml = f'<commit index="{index}">\n'
-    cxml += f"  <sha>{commit.hexsha}</sha>\n"
-    cxml += f"  <short_sha>{commit.short_sha}</short_sha>\n"
-    cxml += f"  <author>{html.escape(commit.author_name or '')} <{commit.author_email}></author>\n"
-    cxml += f"  <authored_date>{authored_date}</authored_date>\n"
-    cxml += f"  <committer>{html.escape(commit.committer_name or '')} <{commit.committer_email}></committer>\n"
-    cxml += f"  <committed_date>{committed_date}</committed_date>\n"
-    cxml += f"  <subject>{subject}</subject>\n"
+    cxml += f"<sha>{commit.hexsha}</sha>\n"
+    cxml += f"<short_sha>{commit.short_sha}</short_sha>\n"
+    cxml += f"<author>{html.escape(commit.author_name or '')} <{commit.author_email}></author>\n"
+    cxml += f"<authored_date>{authored_date}</authored_date>\n"
+    cxml += f"<committer>{html.escape(commit.committer_name or '')} <{commit.committer_email}></committer>\n"
+    cxml += f"<committed_date>{committed_date}</committed_date>\n"
+    cxml += f"<subject>{subject}</subject>\n"
 
     if commit.parent_shas:
-        cxml += "  <parents>\n"
+        cxml += "<parents>\n"
         for parent in commit.parent_shas:
-            cxml += f"    <parent>{parent}</parent>\n"
-        cxml += "  </parents>\n"
+            cxml += f"<parent>{parent}</parent>\n"
+        cxml += "</parents>\n"
 
     if include_diffs and commit.file_changes:
-        cxml += "  <patch>\n"
+        cxml += "<patch>\n"
         for file_change in commit.file_changes:
             cxml += format_file_change(file_change)
-        cxml += "  </patch>\n"
+        cxml += "</patch>\n"
 
-    cxml += "  <message>\n"
-    cxml += f"    {message}\n"
-    cxml += "  </message>\n"
+    cxml += "<message>\n"
+    cxml += f"{message.strip()}\n"
+    cxml += "</message>\n"
     cxml += "</commit>\n"
 
     return cxml
@@ -68,7 +68,7 @@ def format_file_change(file_change: FileChange) -> str:
     """
     path = html.escape(file_change.path)
 
-    cxml = f'    <file path="{path}" change_type="{file_change.change_type}"'
+    cxml = f'<file path="{path}" change_type="{file_change.change_type}"'
 
     if file_change.insertions or file_change.deletions:
         cxml += f' insertions="{file_change.insertions}" deletions="{file_change.deletions}"'
@@ -78,14 +78,14 @@ def format_file_change(file_change: FileChange) -> str:
 
     if file_change.content:
         cxml += ">\n"
-        cxml += "      <diff>\n"
+        cxml += "<diff>\n"
         # Add the diff content with proper indentation and escaping
         content = html.escape(file_change.content)
         # Split by lines to maintain proper indentation
         for line in content.splitlines():
-            cxml += f"        {line}\n"
-        cxml += "      </diff>\n"
-        cxml += "    </file>\n"
+            cxml += f"{line}\n"
+        cxml += "</diff>\n"
+        cxml += "</file>\n"
     else:
         cxml += " />\n"
 

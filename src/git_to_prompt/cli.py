@@ -23,9 +23,10 @@ def log(
         bool,
         Parameter(
             help="Include commit diffs in the output",
-            negative="--no-patch",
+            name=["--patch", "-p", "-u"],
+            negative=["--no-patch"],
         ),
-    ] = True,
+    ] = False,
     max_count: Annotated[
         int | None,
         Parameter(help="Maximum number of commits to show", name=["--max-count", "-n"]),

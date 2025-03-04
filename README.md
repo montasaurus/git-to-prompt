@@ -18,10 +18,16 @@ uv tool install git-to-prompt
 
 ### Basic usage
 
-Get the latest commits from the current repository:
+Get all the commits from the current repository:
 
 ```bash
 git-to-prompt log
+```
+
+Get all the diffs in this branch back off `master`:
+
+```bash
+git-to-prompt log master..HEAD --patch
 ```
 
 This outputs Git commits in a Claude XML format that's well-suited for LLM prompting.
@@ -44,17 +50,14 @@ Options:
   --help                        Show this message and exit.
 
 Examples:
-  # Get the last 5 commits
-  git-to-prompt log -n 5
+  # Get the last 5 commits with diffs attached
+  git-to-prompt log -n 5 --patch
 
   # Get commits between two revisions
   git-to-prompt log "v1.0..v2.0"
 
   # Output to a file
   git-to-prompt log -o log.xml
-
-  # Exclude the diff contents
-  git-to-prompt log --no-patch
 ```
 
 ## Output Format

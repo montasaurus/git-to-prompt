@@ -55,17 +55,14 @@ def log(
     structured nature of git commit data.
 
     Examples:
-        # Get the last 5 commits
-        git-to-prompt log -n 5
+        # Get the last 5 commits with diffs attached
+        git-to-prompt log -n 5 --patch
 
         # Get commits between two revisions
         git-to-prompt log "v1.0..v2.0"
 
         # Output to a file
         git-to-prompt log -o log.xml
-
-        # Exclude the diff contents
-        git-to-prompt log --no-patch
     """
     try:
         # Find the Git repository

@@ -11,7 +11,7 @@ This tool was largely written using Claude 3.7 Sonnet, and is very lightly teste
 Install directly from the repository using [uv](https://github.com/astral-sh/uv):
 
 ```bash
-uv tool install git+https://github.com/montasaurus/git-to-prompt.git
+uv tool install git-to-prompt
 ```
 
 ## Usage

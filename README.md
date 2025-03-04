@@ -1,6 +1,6 @@
 # git-to-prompt
 
-A command-line tool for turning Git repository information into formats suitable for Large Language Model (LLM) prompts.
+A command-line tool for turning Git repository information into context for LLM prompts.
 
 Inspired by [files-to-prompt](https://github.com/simonw/files-to-prompt), this tool focuses on git history instead of files, making it easy to include repository history in your prompts to LLMs like Claude and GPT.
 

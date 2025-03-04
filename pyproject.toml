@@ -1,7 +1,7 @@
 [project]
 name = "git-to-prompt"
 version = "0.1.0"
-description = "Turn git repository information into formats suitable for LLM prompts"
+description = "Turn git repository information into LLM prompt context"
 readme = "README.md"
 authors = [{ name = "Adam Montgomery" }]
 license = { text = "Apache-2.0" }

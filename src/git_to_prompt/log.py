@@ -189,7 +189,7 @@ def get_repo(path: Path) -> Repo:
     while current_path != current_path.parent:
         try:
             return Repo(current_path)
-        except Exception:
+        except Exception:  # noqa: PERF203
             current_path = current_path.parent
 
     raise ValueError(f"No Git repository found at or above {path}")

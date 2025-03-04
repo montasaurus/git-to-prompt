@@ -1,20 +1,43 @@
-
 [project]
 name = "git-to-prompt"
 version = "0.1.0"
 description = ""
 readme = "README.md"
-authors = [
-    { name = "Adam Montgomery", email = "montgomery.adam@gmail.com" }
-]
+authors = [{ name = "Adam Montgomery", email = "montgomery.adam@gmail.com" }]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = ["attrs>=25.1.0", "cyclopts>=3.9.0", "gitpython>=3.1.44"]
+
+[project.scripts]
+git-to-prompt = "git_to_prompt.cli:app"
+
 
 [tool.pyright]
-
+include = ["src"]
 exclude = ["**/node_modules", "**/__pycache__", "**/notebooks", ".venv/**"]
+ignore = ["var"]
 
 typeCheckingMode = "strict"
 
+[tool.ruff]
+exclude = ["var"]
+
+[tool.ruff.lint]
+extend-select = [
+    "Q",
+    "RUF",
+    "UP",
+    "I",
+    "DTZ",
+    "ASYNC",
+    "TID",
+    "FAST",
+    "PERF",
+    "SIM",
+    "PTH",
+    "C4",
+    "FURB",
+    "A",
+]
+
 [dependency-groups]
-dev = ["pytest"]
+dev = ["pytest", "ruff>=0.9.9", "wat>=0.5.1"]

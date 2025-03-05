@@ -1,6 +1,6 @@
 [project]
 name = "git-to-prompt"
-version = "0.1.1"
+dynamic = ["version"]
 description = "Turn git repository information into LLM prompt context"
 readme = "README.md"
 authors = [{ name = "Adam Montgomery" }]
@@ -20,6 +20,9 @@ git-to-prompt = "git_to_prompt.cli:app"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/git_to_prompt/__init__.py"
 
 [tool.pyright]
 include = ["src"]

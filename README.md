@@ -58,6 +58,15 @@ Examples:
 
   # Output to a file
   git-to-prompt log -o log.xml
+
+  # Filter commits by path
+  git-to-prompt log --path path/to/file.py
+
+  # Filter commits by multiple paths
+  git-to-prompt log --path path/to/file.py another/path
+
+  # Combine with revision range
+  git-to-prompt log HEAD~10..HEAD --path path/to/file.py
 ```
 
 ## Output Format

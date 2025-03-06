@@ -46,6 +46,14 @@ def log(
             validator=validators.Path(exists=True, file_okay=False),
         ),
     ] = Path.cwd(),
+    paths: Annotated[
+        list[str],
+        Parameter(
+            help="Paths to filter commits by (only commits affecting these paths will be shown)",
+            consume_multiple=True,
+            name=["--path", "-p"],
+        ),
+    ] = [],
 ) -> None:
     """
     Generate a formatted log of git commits suitable for LLM prompts.
@@ -63,13 +71,22 @@ def log(
 
         # Output to a file
         git-to-prompt log -o log.xml
+
+        # Filter commits by path (all arguments after -- are treated as paths)
+        git-to-prompt log --path path/to/file.py
+
+        # Filter commits by multiple paths
+        git-to-prompt log --path path/to/file.py another/path
+
+        # Combine with revision range
+        git-to-prompt log HEAD~10..HEAD --path path/to/file.py
     """
     try:
         # Find the Git repository
         repo = get_repo(repo_path)
 
         # Get the commits
-        commits = get_commits(repo, revision_range, include_patch, max_count)
+        commits = get_commits(repo, revision_range, include_patch, max_count, paths)
 
         # Write the commits to the output
         if output:

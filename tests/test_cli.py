@@ -90,3 +90,26 @@ def test_log_with_regular_revision_range_and_paths(mock_get_repo, mock_get_commi
 
 
 # The core functionality is tested through direct function tests
+
+
+def test_log_with_relative_paths_from_subfolder(mock_get_repo, mock_get_commits, mock_write_commits):
+    """Test log function with relative paths when executed from a subfolder."""
+    # Setup
+    repo_mock = MagicMock()
+    repo_mock.working_dir = "/repo/root"
+    mock_get_repo.return_value = repo_mock
+    
+    # Mock current working directory to be a subfolder of the repo
+    with patch("pathlib.Path.cwd") as mock_cwd:
+        mock_cwd.return_value = Path("/repo/root/some/subfolder")
+        
+        # Call the function with a relative path
+        log(None, [Path("../another/file.py"), Path("./current/file.py")], include_patch=False)
+    
+    # Check if get_commits was called with paths properly adjusted to be relative to repo root
+    mock_get_commits.assert_called_once()
+    args, _ = mock_get_commits.call_args
+    assert args[0] == repo_mock  # repo
+    assert args[1] is None  # revision_range
+    assert "some/subfolder/current/file.py" in args[4]  # Relative path from current folder
+    assert "some/subfolder/../another/file.py" in args[4]  # The path is added but .. is not resolved

@@ -165,6 +165,12 @@ def test_get_commits_with_path_filter(temp_git_repo: Path):
     # Should have only the commit that added other.txt
     assert len(other_file_commits) == 1
     assert other_file_commits[0].subject == "Add other file"
+    
+    # Test with Path objects (as the CLI now uses)
+    path_obj_commits = list(get_commits(repo, None, include_diffs=False, max_count=None, 
+                                       paths=[Path("other/other.txt")]))
+    assert len(path_obj_commits) == 1
+    assert path_obj_commits[0].subject == "Add other file"
 
 
 def test_get_commits_with_multiple_paths(temp_git_repo: Path):
@@ -258,6 +264,20 @@ def test_get_commits_with_revision_range_and_path(temp_git_repo: Path):
     assert "Update file1" in commit_subjects
     assert "Add file2" not in commit_subjects
     assert "Update file2" not in commit_subjects
+    
+    # Test with Path objects and multiple paths
+    path_obj_commits = list(get_commits(
+        repo, "HEAD~4..HEAD", include_diffs=False, max_count=None, 
+        paths=[Path("file1.txt"), Path("file2.txt")]
+    ))
+    
+    # Should have all commits related to either file in the revision range
+    assert len(path_obj_commits) == 4
+    path_obj_subjects = [commit.subject for commit in path_obj_commits]
+    assert "Add file1" in path_obj_subjects
+    assert "Update file1" in path_obj_subjects
+    assert "Add file2" in path_obj_subjects
+    assert "Update file2" in path_obj_subjects
 
 
 def test_get_commits_with_none_paths(temp_git_repo: Path):
@@ -315,3 +335,7 @@ def test_get_commits_with_empty_paths_list(temp_git_repo: Path):
     
     # The commit for the new files should be included
     assert any("Add new files" in commit.subject for commit in empty_list_commits)
+
+
+# The -- delimiter is handled at the CLI level, not directly in get_commits
+# so we're removing this test as it doesn't make sense at this level

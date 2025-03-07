@@ -10,14 +10,35 @@ from git_to_prompt.log import get_commits, get_repo
 
 app = App(
     name="git-to-prompt",
+    end_of_options_delimiter="",  # Allow -- delimiter syntax
 )
+
+
+def revision_range_validator(type_, value: str):
+    """Validate revision range, allowing bare -- for path-only usage"""
+    if value == "--":
+        return
+    # Add more validation if needed
+    return
 
 
 @app.command
 def log(
     revision_range: Annotated[
-        str | None, Parameter(help="Revision range (e.g., 'HEAD~5..HEAD')")
+        str | None, 
+        Parameter(
+            help="Revision range (e.g., 'HEAD~5..HEAD') or -- to separate paths",
+            validator=revision_range_validator, 
+            allow_leading_hyphen=True
+        )
     ] = None,
+    paths: Annotated[
+        list[Path], 
+        Parameter(
+            help="Paths to filter commits by (only commits affecting these paths will be shown)",
+            allow_leading_hyphen=True
+        )
+    ] = [],
     /,
     include_patch: Annotated[
         bool,
@@ -46,14 +67,6 @@ def log(
             validator=validators.Path(exists=True, file_okay=False),
         ),
     ] = Path.cwd(),
-    paths: Annotated[
-        list[str],
-        Parameter(
-            help="Paths to filter commits by (only commits affecting these paths will be shown)",
-            consume_multiple=True,
-            name=["--path", "-p"],
-        ),
-    ] = [],
 ) -> None:
     """
     Generate a formatted log of git commits suitable for LLM prompts.
@@ -72,21 +85,31 @@ def log(
         # Output to a file
         git-to-prompt log -o log.xml
 
-        # Filter commits by path (all arguments after -- are treated as paths)
-        git-to-prompt log --path path/to/file.py
+        # Filter commits by path (using -- syntax)
+        git-to-prompt log -- path/to/file.py
 
-        # Filter commits by multiple paths
-        git-to-prompt log --path path/to/file.py another/path
+        # Filter commits by multiple paths (using -- syntax)
+        git-to-prompt log -- path/to/file.py another/path
 
-        # Combine with revision range
-        git-to-prompt log HEAD~10..HEAD --path path/to/file.py
+        # Combine with revision range and paths
+        git-to-prompt log HEAD~10..HEAD path/to/file.py
+
+        # Explicitly use -- to separate paths
+        git-to-prompt log -- path/to/file.py
     """
     try:
         # Find the Git repository
         repo = get_repo(repo_path)
 
+        # If revision_range is the bare "--", set it to None
+        if revision_range == "--":
+            revision_range = None
+
+        # Convert path objects to strings for GitPython
+        path_strs = [str(p) for p in paths] if paths else []
+
         # Get the commits
-        commits = get_commits(repo, revision_range, include_patch, max_count, paths)
+        commits = get_commits(repo, revision_range, include_patch, max_count, path_strs)
 
         # Write the commits to the output
         if output:

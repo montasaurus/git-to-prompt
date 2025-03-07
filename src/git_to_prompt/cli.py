@@ -108,7 +108,33 @@ def log(
             revision_range = None
 
         # Convert path objects to strings for GitPython
-        path_strs = [str(p) for p in paths] if paths else []
+        # GitPython path handling works like git - paths should be relative to the repository root
+        # When we're in a subdirectory, we need to convert relative paths to be relative to repo root
+        repo_root = Path(repo.working_dir)
+        current_dir = Path.cwd()
+        
+        # If we're in a subfolder of the repo, adjust the paths accordingly
+        path_strs = []
+        if paths:
+            for p in paths:
+                path_obj = Path(p)
+                # If it's already an absolute path within the repo, use it as is but make relative to repo root
+                if path_obj.is_absolute() and repo_root in path_obj.parents:
+                    path_strs.append(str(path_obj.relative_to(repo_root)))
+                # For relative paths, we need to adjust based on our current location
+                else:
+                    # Determine if we're in a subfolder of the repo
+                    if current_dir != repo_root and current_dir.is_relative_to(repo_root):
+                        # If we're in a subfolder and path is relative, we need to make it relative to the repo root
+                        # First calculate the path relative to current dir (which may be a subfolder)
+                        # Then calculate the current dir relative to repo root
+                        # Finally combine them to get the proper path relative to repo root
+                        subfolder_path = current_dir.relative_to(repo_root)
+                        full_path = subfolder_path / path_obj
+                        path_strs.append(str(full_path))
+                    else:
+                        # We're at repo root or outside the repo, use the path as is
+                        path_strs.append(str(path_obj))
 
         # Get the commits
         commits = get_commits(repo, revision_range, include_patch, max_count, path_strs)

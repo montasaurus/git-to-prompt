@@ -7,7 +7,7 @@ from git import GitCommandError
 
 from git_to_prompt.formatter import write_commits_as_cxml
 from git_to_prompt.log import get_commits, get_repo
-from git_to_prompt.repomixpy import RepomixPython
+from git_to_prompt.repo import pack_repository
 
 app = App(
     name="git-to-prompt",
@@ -176,9 +176,7 @@ def repo(
 
         # TODO: Filter by path
 
-        # Get the commits
-        repomix = RepomixPython(repo)
-        result = repomix.pack()
+        result = pack_repository(repo)
 
         if output:
             with Path.open(output, "w", encoding="utf-8") as f:

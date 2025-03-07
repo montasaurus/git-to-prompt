@@ -151,11 +151,11 @@ def _get_change_type(diff: Diff) -> str:
 
 
 def get_commits(
-    repo: Repo, 
-    revision_range: str | None, 
-    include_diffs: bool, 
-    max_count: int | None, 
-    paths: str | PathLike[str] | Sequence[str | PathLike[str]] | None = None
+    repo: Repo,
+    revision_range: str | None,
+    include_diffs: bool,
+    max_count: int | None,
+    paths: str | PathLike[str] | Sequence[str | PathLike[str]] | None = None,
 ) -> Generator[Commit]:
     """
     Get commits from the repository for the given revision range.
@@ -171,7 +171,7 @@ def get_commits(
         Commit objects for each commit in the range
     """
     # If paths is None, use empty string which means no path filtering
-    path_arg = paths if paths is not None else ''
+    path_arg = paths if paths is not None else ""
     commits = repo.iter_commits(rev=revision_range, paths=path_arg)
 
     for git_commit in itertools.islice(commits, max_count):

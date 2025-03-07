@@ -9,6 +9,8 @@ from typing import Any
 
 from git import Repo
 
+from git_to_prompt.git import get_repo
+
 
 class RepomixPython:
     """A Python implementation of Repomix for packing repositories into AI-friendly formats using GitPython."""
@@ -429,6 +431,9 @@ class RepomixPython:
         return "\n".join(output)
 
 
-def pack_repository(repo: Repo, ignore_paths: list[str] | None = None) -> str:
+def pack_repository(repo_path: Path, ignore_paths: list[str] | None = None) -> str:
+    repo = get_repo(repo_path)
+
     repomix = RepomixPython(repo, ignore_paths)
+
     return repomix.pack()

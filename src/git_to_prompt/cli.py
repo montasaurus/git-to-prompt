@@ -6,7 +6,8 @@ from cyclopts import App, Parameter, validators
 from git import GitCommandError
 
 from git_to_prompt.formatter import write_commits_as_cxml
-from git_to_prompt.log import get_commits, get_repo
+from git_to_prompt.git import get_repo
+from git_to_prompt.log import get_commits
 from git_to_prompt.repo import pack_repository
 
 app = App(
@@ -171,12 +172,9 @@ def repo(
     ] = Path.cwd(),
 ) -> None:
     try:
-        # Find the Git repository
-        repo = get_repo(repo_path)
-
         # TODO: Filter by path
 
-        result = pack_repository(repo)
+        result = pack_repository(repo_path)
 
         if output:
             with Path.open(output, "w", encoding="utf-8") as f:

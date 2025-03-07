@@ -35,16 +35,20 @@ This outputs Git commits in a Claude XML format that's well-suited for LLM promp
 ### Options
 
 ```
-Usage: git-to-prompt log [OPTIONS] [REVISION_RANGE]
+Usage: git-to-prompt log [REVISION_RANGE] [PATHS] [OPTIONS]
 
   Generate a formatted log of git commits suitable for LLM prompts.
 
   Outputs in Claude XML format, which is designed to be easily parseable by large
   language models while maintaining the structured nature of git commit data.
 
+Arguments:
+  REVISION_RANGE  Revision range (e.g., 'HEAD~5..HEAD') or -- to separate paths
+  PATHS           Paths to filter commits by (only commits affecting these paths will be shown)
+
 Options:
   -n, --max-count INTEGER       Maximum number of commits to show
-  --include-patch / --no-patch  Include commit diffs in the output (default: include)
+  -p, -u, --patch / --no-patch  Include commit diffs in the output (default: false)
   -o, --output PATH             Output file (defaults to stdout)
   --repo-path DIRECTORY         Path to the Git repository (defaults to current directory)
   --help                        Show this message and exit.
@@ -59,14 +63,14 @@ Examples:
   # Output to a file
   git-to-prompt log -o log.xml
 
-  # Filter commits by path
-  git-to-prompt log --path path/to/file.py
+  # Filter commits by path (using -- syntax, just like git)
+  git-to-prompt log -- path/to/file.py
 
   # Filter commits by multiple paths
-  git-to-prompt log --path path/to/file.py another/path
+  git-to-prompt log -- path/to/file.py another/path
 
-  # Combine with revision range
-  git-to-prompt log HEAD~10..HEAD --path path/to/file.py
+  # Combine with revision range and paths
+  git-to-prompt log HEAD~10..HEAD path/to/file.py
 ```
 
 ## Output Format

@@ -89,10 +89,4 @@ def test_log_with_regular_revision_range_and_paths(mock_get_repo, mock_get_commi
     assert args[4] == ["test/file.py"]  # paths
 
 
-# Let's focus our tests on the actual functionality we've implemented.
-# Since we've already tested the --delimiter functionality with our CLI commands,
-# and we have comprehensive direct function tests for the path handling,
-# we'll skip additional CLI parsing tests that can be hard to simulate.
-# 
-# The most important aspects (the function handling of paths and -- delimiter)
-# are covered by the existing tests.
+# The core functionality is tested through direct function tests

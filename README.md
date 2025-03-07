@@ -35,7 +35,7 @@ This outputs Git commits in a Claude XML format that's well-suited for LLM promp
 ### Options
 
 ```
-Usage: git-to-prompt log [REVISION_RANGE] [PATHS] [OPTIONS]
+Usage: git-to-prompt log [<options>] [<revision-range>] [[--] <path>...]
 
   Generate a formatted log of git commits suitable for LLM prompts.
 
@@ -43,8 +43,8 @@ Usage: git-to-prompt log [REVISION_RANGE] [PATHS] [OPTIONS]
   language models while maintaining the structured nature of git commit data.
 
 Arguments:
-  REVISION_RANGE  Revision range (e.g., 'HEAD~5..HEAD') or -- to separate paths
-  PATHS           Paths to filter commits by (only commits affecting these paths will be shown)
+  <revision-range>   Revision range (e.g., 'HEAD~5..HEAD')
+  <path>...          Paths to filter commits by (only commits affecting these paths will be shown)
 
 Options:
   -n, --max-count INTEGER       Maximum number of commits to show

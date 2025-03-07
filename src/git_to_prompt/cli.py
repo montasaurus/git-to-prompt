@@ -27,7 +27,7 @@ def log(
     revision_range: Annotated[
         str | None, 
         Parameter(
-            help="Revision range (e.g., 'HEAD~5..HEAD') or -- to separate paths",
+            help="Revision range (e.g., 'HEAD~5..HEAD')",
             validator=revision_range_validator, 
             allow_leading_hyphen=True
         )
@@ -35,7 +35,7 @@ def log(
     paths: Annotated[
         list[Path], 
         Parameter(
-            help="Paths to filter commits by (only commits affecting these paths will be shown)",
+            help="Paths to filter commits by",
             allow_leading_hyphen=True
         )
     ] = [],
@@ -70,6 +70,8 @@ def log(
 ) -> None:
     """
     Generate a formatted log of git commits suitable for LLM prompts.
+
+    Usage: git-to-prompt log [<options>] [<revision-range>] [[--] <path>...]
 
     Outputs in Claude XML format, which is designed to be
     easily parseable by large language models while maintaining the

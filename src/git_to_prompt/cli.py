@@ -25,19 +25,16 @@ def revision_range_validator(type_, value: str):
 @app.command
 def log(
     revision_range: Annotated[
-        str | None, 
+        str | None,
         Parameter(
             help="Revision range (e.g., 'HEAD~5..HEAD')",
-            validator=revision_range_validator, 
-            allow_leading_hyphen=True
-        )
+            validator=revision_range_validator,
+            allow_leading_hyphen=True,
+        ),
     ] = None,
     paths: Annotated[
-        list[Path], 
-        Parameter(
-            help="Paths to filter commits by",
-            allow_leading_hyphen=True
-        )
+        list[Path],
+        Parameter(help="Paths to filter commits by", allow_leading_hyphen=True),
     ] = [],
     /,
     include_patch: Annotated[
@@ -112,11 +109,13 @@ def log(
         # When we're in a subdirectory, we need to convert relative paths to be relative to repo root
         repo_root = Path(repo.working_dir)
         current_dir = Path.cwd()
-        
+
         # If we're in a subfolder of the repo, adjust the paths accordingly
         path_strs = []
         if paths:
             for p in paths:
+                if p.name == "--":
+                    continue
                 path_obj = Path(p)
                 # If it's already an absolute path within the repo, use it as is but make relative to repo root
                 if path_obj.is_absolute() and repo_root in path_obj.parents:
@@ -124,7 +123,9 @@ def log(
                 # For relative paths, we need to adjust based on our current location
                 else:
                     # Determine if we're in a subfolder of the repo
-                    if current_dir != repo_root and current_dir.is_relative_to(repo_root):
+                    if current_dir != repo_root and current_dir.is_relative_to(
+                        repo_root
+                    ):
                         # If we're in a subfolder and path is relative, we need to make it relative to the repo root
                         # First calculate the path relative to current dir (which may be a subfolder)
                         # Then calculate the current dir relative to repo root

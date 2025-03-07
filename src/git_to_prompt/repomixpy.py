@@ -4,6 +4,7 @@
 
 import fnmatch
 import os
+from pathlib import Path
 from typing import Any
 
 from git import Repo
@@ -12,18 +13,16 @@ from git import Repo
 class RepomixPython:
     """A Python implementation of Repomix for packing repositories into AI-friendly formats using GitPython."""
 
-    def __init__(self, root_dir: str, ignore_paths: list[str] | None = None):
+    def __init__(self, repo: Repo, ignore_paths: list[str] | None = None):
         """Initialize the Repomix Python implementation.
 
         Args:
             root_dir: Root directory of the repository to process
             ignore_paths: List of additional paths to ignore (glob patterns)
         """
-        self.root_dir = os.path.abspath(root_dir)
+        self.repo = repo
+        self.root_dir = Path(repo.working_dir)
         self.ignore_paths = ignore_paths or []
-
-        # Initialize GitPython repo
-        self.repo = Repo(self.root_dir)
 
         # Default ignore patterns (from defaultIgnore.ts)
         self.default_ignore_patterns = [
@@ -126,10 +125,10 @@ class RepomixPython:
             List of ignore patterns from the file
         """
         patterns: list[str] = []
-        ignore_path = os.path.join(self.root_dir, ignore_file)
+        ignore_path = self.root_dir / ignore_file
 
-        if os.path.exists(ignore_path):
-            with open(ignore_path, encoding="utf-8") as f:
+        if ignore_path.exists():
+            with Path.open(ignore_path, encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line and not line.startswith("#"):

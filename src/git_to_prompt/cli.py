@@ -7,6 +7,7 @@ from git import GitCommandError
 
 from git_to_prompt.formatter import write_commits_as_cxml
 from git_to_prompt.log import get_commits, get_repo
+from git_to_prompt.repomixpy import RepomixPython
 
 app = App(
     name="git-to-prompt",
@@ -146,6 +147,44 @@ def log(
                 write_commits_as_cxml(commits, f, include_patch)
         else:
             write_commits_as_cxml(commits, sys.stdout, include_patch)
+    except GitCommandError as e:
+        print(str(e), file=sys.stderr)
+        sys.exit(1)
+
+
+@app.command
+def repo(
+    output: Annotated[
+        Path | None,
+        Parameter(
+            help="Output file (defaults to stdout)",
+            validator=validators.Path(file_okay=True, dir_okay=False),
+            name=["--output", "-o"],
+        ),
+    ] = None,
+    repo_path: Annotated[
+        Path,
+        Parameter(
+            help="Path to the Git repository (defaults to current directory)",
+            validator=validators.Path(exists=True, file_okay=False),
+        ),
+    ] = Path.cwd(),
+) -> None:
+    try:
+        # Find the Git repository
+        repo = get_repo(repo_path)
+
+        # TODO: Filter by path
+
+        # Get the commits
+        repomix = RepomixPython(repo)
+        result = repomix.pack()
+
+        if output:
+            with Path.open(output, "w", encoding="utf-8") as f:
+                f.write(result)
+        else:
+            sys.stdout.write(result)
     except GitCommandError as e:
         print(str(e), file=sys.stderr)
         sys.exit(1)

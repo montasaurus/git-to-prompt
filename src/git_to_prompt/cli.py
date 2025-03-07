@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from cyclopts import App, Parameter, validators
 from git import GitCommandError
@@ -14,7 +14,7 @@ app = App(
 )
 
 
-def revision_range_validator(type_, value: str):
+def revision_range_validator(_type: Any, value: str) -> None:
     """Validate revision range, allowing bare -- for path-only usage"""
     if value == "--":
         return
@@ -111,7 +111,7 @@ def log(
         current_dir = Path.cwd()
 
         # If we're in a subfolder of the repo, adjust the paths accordingly
-        path_strs = []
+        path_strs: list[str] = []
         if paths:
             for p in paths:
                 if p.name == "--":

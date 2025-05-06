@@ -43,16 +43,21 @@ def format_commit_as_cxml(
         cxml += "</parents>\n"
 
     if include_diffs and commit.file_changes:
-        cxml += "<patch>\n"
-        for file_change in commit.file_changes:
-            cxml += format_file_change(file_change)
-        cxml += "</patch>\n"
+        cxml += format_file_changes(commit.file_changes)
 
     cxml += "<message>\n"
     cxml += f"{message.strip()}\n"
     cxml += "</message>\n"
     cxml += "</commit>\n"
 
+    return cxml
+
+
+def format_file_changes(file_changes: list[FileChange]):
+    cxml = "<patch>\n"
+    for file_change in file_changes:
+        cxml += format_file_change(file_change)
+    cxml += "</patch>\n"
     return cxml
 
 

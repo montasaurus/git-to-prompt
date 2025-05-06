@@ -6,11 +6,11 @@ from unittest.mock import MagicMock
 import pytest
 from git import Repo
 
+from git_to_prompt.git import get_repo
 from git_to_prompt.log import (
     Commit,
     FileChange,
     get_commits,
-    get_repo,
 )
 
 
@@ -263,23 +263,23 @@ def test_get_commits_with_revision_range_and_path(temp_git_repo: Path):
     file1 = temp_git_repo / "file1.txt"
     file1.write_text("File 1 content")
     repo.git.add("file1.txt")
-    file1_commit = repo.git.commit("-m", "Add file1")
+    repo.git.commit("-m", "Add file1")
 
     # Add file2.txt
     file2 = temp_git_repo / "file2.txt"
     file2.write_text("File 2 content")
     repo.git.add("file2.txt")
-    file2_commit = repo.git.commit("-m", "Add file2")
+    repo.git.commit("-m", "Add file2")
 
     # Update file1.txt
     file1.write_text("Updated File 1 content")
     repo.git.add("file1.txt")
-    update_file1_commit = repo.git.commit("-m", "Update file1")
+    repo.git.commit("-m", "Update file1")
 
     # Update file2.txt
     file2.write_text("Updated File 2 content")
     repo.git.add("file2.txt")
-    update_file2_commit = repo.git.commit("-m", "Update file2")
+    repo.git.commit("-m", "Update file2")
 
     # Get HEAD~3..HEAD commits (last 3 commits) for file1.txt
     # This should include "Add file1" and "Update file1" but not "Add file2" or "Update file2"

@@ -130,7 +130,7 @@ def test_get_commits(temp_git_repo: Path):
     assert len(commits) >= 2
 
     # Check the most recent commit (first in the list)
-    assert commits[0].subject == "Update test file"
+    assert commits[0].subject == "Add second file"
 
     # Test with max_count
     limited_commits = list(get_commits(repo, None, include_diffs=False, max_count=1))

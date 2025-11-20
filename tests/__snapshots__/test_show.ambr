@@ -1,0 +1,87 @@
+# serializer version: 1
+# name: test_show_includes_patch_by_default
+  '''
+  <commits>
+  <commit index="1">
+  <sha>db3f227ff385e12b81ec4cf69bec442cc14c32c1</sha>
+  <short_sha>db3f227</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2024-01-01T12:10:00+00:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2024-01-01T12:10:00+00:00</committed_date>
+  <subject>Add second file</subject>
+  <parents>
+  <parent>b05b13c04b6a2b36131caea0d28ce4fb50180da8</parent>
+  </parents>
+  <patch>
+  <file path="second.txt" change_type="A" insertions="1" deletions="0">
+  <diff>
+     1  @@ -0,0 +1 @@
+     2  +Second file content
+     3  \ No newline at end of file
+  </diff>
+  </file>
+  </patch>
+  <message>
+  Add second file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---
+# name: test_show_respects_no_patch
+  '''
+  <commits>
+  <commit index="1">
+  <sha>db3f227ff385e12b81ec4cf69bec442cc14c32c1</sha>
+  <short_sha>db3f227</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2024-01-01T12:10:00+00:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2024-01-01T12:10:00+00:00</committed_date>
+  <subject>Add second file</subject>
+  <parents>
+  <parent>b05b13c04b6a2b36131caea0d28ce4fb50180da8</parent>
+  </parents>
+  <message>
+  Add second file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---
+# name: test_show_with_path_filter
+  '''
+  <commits>
+  <commit index="1">
+  <sha>b05b13c04b6a2b36131caea0d28ce4fb50180da8</sha>
+  <short_sha>b05b13c</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2024-01-01T12:05:00+00:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2024-01-01T12:05:00+00:00</committed_date>
+  <subject>Update test file</subject>
+  <parents>
+  <parent>0d64b8d2d1f0ba67a4ea730b0be921554792460e</parent>
+  </parents>
+  <patch>
+  <file path="test.txt" change_type="M" insertions="1" deletions="1">
+  <diff>
+     1  @@ -1 +1 @@
+       -Initial content
+     2  \ No newline at end of file
+     3  +Updated content
+     4  \ No newline at end of file
+  </diff>
+  </file>
+  </patch>
+  <message>
+  Update test file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---

@@ -14,12 +14,33 @@ app = App(
 )
 
 
-def revision_range_validator(type_, value: str):
-    """Validate revision range, allowing bare -- for path-only usage"""
-    if value == "--":
-        return
-    # Add more validation if needed
-    return
+def _normalize_paths(
+    paths: list[Path], repo_root: Path, current_dir: Path
+) -> list[str]:
+    """Normalize provided paths to be relative to the repository root."""
+
+    path_strs: list[str] = []
+
+    for p in paths:
+        if p.name == "--":
+            continue
+
+        path_obj = Path(p)
+
+        # Absolute path inside repo -> make relative to repo root
+        if path_obj.is_absolute() and repo_root in path_obj.parents:
+            path_strs.append(str(path_obj.relative_to(repo_root)))
+            continue
+
+        # When working from a subfolder, adjust relative paths to repo root
+        if current_dir != repo_root and current_dir.is_relative_to(repo_root):
+            subfolder_path = current_dir.relative_to(repo_root)
+            full_path = subfolder_path / path_obj
+            path_strs.append(str(full_path))
+        else:
+            path_strs.append(str(path_obj))
+
+    return path_strs
 
 
 @app.command
@@ -28,7 +49,6 @@ def log(
         str | None,
         Parameter(
             help="Revision range (e.g., 'HEAD~5..HEAD')",
-            validator=revision_range_validator,
             allow_leading_hyphen=True,
         ),
     ] = None,
@@ -111,36 +131,76 @@ def log(
         current_dir = Path.cwd()
 
         # If we're in a subfolder of the repo, adjust the paths accordingly
-        path_strs = []
-        if paths:
-            for p in paths:
-                if p.name == "--":
-                    continue
-                path_obj = Path(p)
-                # If it's already an absolute path within the repo, use it as is but make relative to repo root
-                if path_obj.is_absolute() and repo_root in path_obj.parents:
-                    path_strs.append(str(path_obj.relative_to(repo_root)))
-                # For relative paths, we need to adjust based on our current location
-                else:
-                    # Determine if we're in a subfolder of the repo
-                    if current_dir != repo_root and current_dir.is_relative_to(
-                        repo_root
-                    ):
-                        # If we're in a subfolder and path is relative, we need to make it relative to the repo root
-                        # First calculate the path relative to current dir (which may be a subfolder)
-                        # Then calculate the current dir relative to repo root
-                        # Finally combine them to get the proper path relative to repo root
-                        subfolder_path = current_dir.relative_to(repo_root)
-                        full_path = subfolder_path / path_obj
-                        path_strs.append(str(full_path))
-                    else:
-                        # We're at repo root or outside the repo, use the path as is
-                        path_strs.append(str(path_obj))
+        path_strs = _normalize_paths(paths, repo_root, current_dir)
 
         # Get the commits
         commits = get_commits(repo, revision_range, include_patch, max_count, path_strs)
 
         # Write the commits to the output
+        if output:
+            with Path.open(output, "w", encoding="utf-8") as f:
+                write_commits_as_cxml(commits, f, include_patch)
+        else:
+            write_commits_as_cxml(commits, sys.stdout, include_patch)
+    except GitCommandError as e:
+        print(str(e), file=sys.stderr)
+        sys.exit(1)
+
+
+@app.command
+def show(
+    commit: Annotated[
+        str,
+        Parameter(
+            help="Commit to show (hash or ref)",
+            allow_leading_hyphen=True,
+        ),
+    ],
+    paths: Annotated[
+        list[Path],
+        Parameter(help="Paths to filter commit by", allow_leading_hyphen=True),
+    ] = [],
+    /,
+    include_patch: Annotated[
+        bool,
+        Parameter(
+            help="Include commit diffs in the output",
+            name=["--patch", "-p", "-u"],
+            negative=["--no-patch"],
+        ),
+    ] = True,
+    output: Annotated[
+        Path | None,
+        Parameter(
+            help="Output file (defaults to stdout)",
+            validator=validators.Path(file_okay=True, dir_okay=False),
+            name=["--output", "-o"],
+        ),
+    ] = None,
+    repo_path: Annotated[
+        Path,
+        Parameter(
+            help="Path to the Git repository (defaults to current directory)",
+            validator=validators.Path(exists=True, file_okay=False),
+        ),
+    ] = Path.cwd(),
+) -> None:
+    """
+    Show a single commit in Claude XML format (defaults to include patch).
+
+    Usage: git-to-prompt show <commit> [--] [<path>...]
+    """
+
+    try:
+        repo = get_repo(repo_path)
+
+        repo_root = Path(repo.working_dir)
+        current_dir = Path.cwd()
+
+        path_strs = _normalize_paths(paths, repo_root, current_dir)
+
+        commits = get_commits(repo, commit, include_patch, 1, path_strs)
+
         if output:
             with Path.open(output, "w", encoding="utf-8") as f:
                 write_commits_as_cxml(commits, f, include_patch)

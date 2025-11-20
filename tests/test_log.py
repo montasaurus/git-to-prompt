@@ -130,7 +130,7 @@ def test_get_commits(temp_git_repo: Path):
     assert len(commits) >= 2
 
     # Check the most recent commit (first in the list)
-    assert commits[0].subject == "Update test file"
+    assert commits[0].subject == "Add second file"
 
     # Test with max_count
     limited_commits = list(get_commits(repo, None, include_diffs=False, max_count=1))
@@ -263,23 +263,23 @@ def test_get_commits_with_revision_range_and_path(temp_git_repo: Path):
     file1 = temp_git_repo / "file1.txt"
     file1.write_text("File 1 content")
     repo.git.add("file1.txt")
-    file1_commit = repo.git.commit("-m", "Add file1")
+    repo.git.commit("-m", "Add file1")
 
     # Add file2.txt
     file2 = temp_git_repo / "file2.txt"
     file2.write_text("File 2 content")
     repo.git.add("file2.txt")
-    file2_commit = repo.git.commit("-m", "Add file2")
+    repo.git.commit("-m", "Add file2")
 
     # Update file1.txt
     file1.write_text("Updated File 1 content")
     repo.git.add("file1.txt")
-    update_file1_commit = repo.git.commit("-m", "Update file1")
+    repo.git.commit("-m", "Update file1")
 
     # Update file2.txt
     file2.write_text("Updated File 2 content")
     repo.git.add("file2.txt")
-    update_file2_commit = repo.git.commit("-m", "Update file2")
+    repo.git.commit("-m", "Update file2")
 
     # Get HEAD~3..HEAD commits (last 3 commits) for file1.txt
     # This should include "Add file1" and "Update file1" but not "Add file2" or "Update file2"

@@ -30,6 +30,12 @@ Get all the diffs in this branch back off `master`:
 git-to-prompt log master..HEAD --patch
 ```
 
+Show a single commit (patches included by default):
+
+```bash
+git-to-prompt show <commit-ish>
+```
+
 This outputs Git commits in a Claude XML format that's well-suited for LLM prompting.
 
 ### Options
@@ -71,6 +77,9 @@ Examples:
 
   # Combine with revision range and paths
   git-to-prompt log HEAD~10..HEAD path/to/file.py
+
+  # Show a single commit (includes patch unless --no-patch is passed)
+  git-to-prompt show HEAD~3
 ```
 
 ## Output Format

@@ -14,15 +14,9 @@ app = App(
 )
 
 
-def revision_range_validator(type_, value: str):
-    """Validate revision range, allowing bare -- for path-only usage"""
-    if value == "--":
-        return
-    # Add more validation if needed
-    return
-
-
-def _normalize_paths(paths: list[Path], repo_root: Path, current_dir: Path) -> list[str]:
+def _normalize_paths(
+    paths: list[Path], repo_root: Path, current_dir: Path
+) -> list[str]:
     """Normalize provided paths to be relative to the repository root."""
 
     path_strs: list[str] = []
@@ -55,7 +49,6 @@ def log(
         str | None,
         Parameter(
             help="Revision range (e.g., 'HEAD~5..HEAD')",
-            validator=revision_range_validator,
             allow_leading_hyphen=True,
         ),
     ] = None,

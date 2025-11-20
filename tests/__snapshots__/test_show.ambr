@@ -3,29 +3,27 @@
   '''
   <commits>
   <commit index="1">
-  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
-  <short_sha>9fd279f</short_sha>
+  <sha>db3f227ff385e12b81ec4cf69bec442cc14c32c1</sha>
+  <short_sha>db3f227</short_sha>
   <author>Test User <test@example.com></author>
-  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <authored_date>2024-01-01T12:10:00+00:00</authored_date>
   <committer>Test User <test@example.com></committer>
-  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
-  <subject>Update test file</subject>
+  <committed_date>2024-01-01T12:10:00+00:00</committed_date>
+  <subject>Add second file</subject>
   <parents>
-  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  <parent>b05b13c04b6a2b36131caea0d28ce4fb50180da8</parent>
   </parents>
   <patch>
-  <file path="test.txt" change_type="M" insertions="1" deletions="1">
+  <file path="second.txt" change_type="A" insertions="1" deletions="0">
   <diff>
-     1  @@ -1 +1 @@
-       -Initial content
-     2  \ No newline at end of file
-     3  +Updated content
-     4  \ No newline at end of file
+     1  @@ -0,0 +1 @@
+     2  +Second file content
+     3  \ No newline at end of file
   </diff>
   </file>
   </patch>
   <message>
-  Update test file
+  Add second file
   </message>
   </commit>
   </commits>
@@ -36,18 +34,18 @@
   '''
   <commits>
   <commit index="1">
-  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
-  <short_sha>9fd279f</short_sha>
+  <sha>db3f227ff385e12b81ec4cf69bec442cc14c32c1</sha>
+  <short_sha>db3f227</short_sha>
   <author>Test User <test@example.com></author>
-  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <authored_date>2024-01-01T12:10:00+00:00</authored_date>
   <committer>Test User <test@example.com></committer>
-  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
-  <subject>Update test file</subject>
+  <committed_date>2024-01-01T12:10:00+00:00</committed_date>
+  <subject>Add second file</subject>
   <parents>
-  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  <parent>b05b13c04b6a2b36131caea0d28ce4fb50180da8</parent>
   </parents>
   <message>
-  Update test file
+  Add second file
   </message>
   </commit>
   </commits>
@@ -58,15 +56,15 @@
   '''
   <commits>
   <commit index="1">
-  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
-  <short_sha>9fd279f</short_sha>
+  <sha>b05b13c04b6a2b36131caea0d28ce4fb50180da8</sha>
+  <short_sha>b05b13c</short_sha>
   <author>Test User <test@example.com></author>
-  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <authored_date>2024-01-01T12:05:00+00:00</authored_date>
   <committer>Test User <test@example.com></committer>
-  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
+  <committed_date>2024-01-01T12:05:00+00:00</committed_date>
   <subject>Update test file</subject>
   <parents>
-  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  <parent>0d64b8d2d1f0ba67a4ea730b0be921554792460e</parent>
   </parents>
   <patch>
   <file path="test.txt" change_type="M" insertions="1" deletions="1">

@@ -1,0 +1,89 @@
+# serializer version: 1
+# name: test_show_includes_patch_by_default
+  '''
+  <commits>
+  <commit index="1">
+  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
+  <short_sha>9fd279f</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
+  <subject>Update test file</subject>
+  <parents>
+  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  </parents>
+  <patch>
+  <file path="test.txt" change_type="M" insertions="1" deletions="1">
+  <diff>
+     1  @@ -1 +1 @@
+       -Initial content
+     2  \ No newline at end of file
+     3  +Updated content
+     4  \ No newline at end of file
+  </diff>
+  </file>
+  </patch>
+  <message>
+  Update test file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---
+# name: test_show_respects_no_patch
+  '''
+  <commits>
+  <commit index="1">
+  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
+  <short_sha>9fd279f</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
+  <subject>Update test file</subject>
+  <parents>
+  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  </parents>
+  <message>
+  Update test file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---
+# name: test_show_with_path_filter
+  '''
+  <commits>
+  <commit index="1">
+  <sha>9fd279f50197e60fe691df4527d8e184c3be55d0</sha>
+  <short_sha>9fd279f</short_sha>
+  <author>Test User <test@example.com></author>
+  <authored_date>2025-11-20T16:58:25-05:00</authored_date>
+  <committer>Test User <test@example.com></committer>
+  <committed_date>2025-11-20T16:58:25-05:00</committed_date>
+  <subject>Update test file</subject>
+  <parents>
+  <parent>04d025e9c2dc3578b3f5f10016902db5a4d45b8b</parent>
+  </parents>
+  <patch>
+  <file path="test.txt" change_type="M" insertions="1" deletions="1">
+  <diff>
+     1  @@ -1 +1 @@
+       -Initial content
+     2  \ No newline at end of file
+     3  +Updated content
+     4  \ No newline at end of file
+  </diff>
+  </file>
+  </patch>
+  <message>
+  Update test file
+  </message>
+  </commit>
+  </commits>
+  
+  '''
+# ---

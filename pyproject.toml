@@ -53,4 +53,4 @@ extend-select = [
 ]
 
 [dependency-groups]
-dev = ["pytest", "ruff>=0.9.9", "wat>=0.5.1"]
+dev = ["pytest", "ruff>=0.9.9", "wat>=0.5.1", "syrupy"]

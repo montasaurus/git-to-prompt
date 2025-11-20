@@ -144,7 +144,7 @@ def _get_change_type(diff: Diff) -> str:
         return "A"  # Added
     elif diff.deleted_file:
         return "D"  # Deleted
-    elif diff.renamed:
+    elif diff.renamed_file:
         return "R"  # Renamed
     else:
         return "M"  # Modified

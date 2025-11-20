@@ -5,9 +5,16 @@ description = "Turn git repository information into LLM prompt context"
 readme = "README.md"
 authors = [{ name = "Adam Montgomery" }]
 license = { text = "Apache-2.0" }
-classifiers = ["License :: OSI Approved :: Apache Software License"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
 requires-python = ">=3.10"
-dependencies = ["attrs>=25.1.0", "cyclopts>=3.9.0,<4", "gitpython>=3.1.44"]
+dependencies = ["attrs>=25.1.0", "cyclopts>=4,<5", "gitpython>=3.1.44,<4"]
 
 [project.urls]
 Homepage = "https://github.com/montasaurus/git-to-prompt"

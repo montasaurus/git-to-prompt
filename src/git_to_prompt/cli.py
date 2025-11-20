@@ -11,6 +11,7 @@ from git_to_prompt.log import get_commits, get_repo
 app = App(
     name="git-to-prompt",
     end_of_options_delimiter="",  # Allow -- delimiter syntax
+    result_action="return_value",
 )
 
 
@@ -87,8 +88,6 @@ def log(
 ) -> None:
     """
     Generate a formatted log of git commits suitable for LLM prompts.
-
-    Usage: git-to-prompt log [<options>] [<revision-range>] [[--] <path>...]
 
     Outputs in Claude XML format, which is designed to be
     easily parseable by large language models while maintaining the
@@ -187,8 +186,6 @@ def show(
 ) -> None:
     """
     Show a single commit in Claude XML format (defaults to include patch).
-
-    Usage: git-to-prompt show <commit> [--] [<path>...]
     """
 
     try:
